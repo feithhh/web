@@ -1,0 +1,10 @@
+3databasewp-----------------------------------------------------------------------------------------------------------------------
+mysql -u root
+-
+CREATE DATABASE wordpress;
+-
+GRANT ALL ON wordpress.* TO 'niam'@'localhost' IDENTIFIED BY 'niam' WITH GRANT OPTION;
+-
+FLUSH PRIVILEGES;
+EXIT
+-------------------------------------------------------------------------------------------------------------------------------

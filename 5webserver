@@ -1,0 +1,36 @@
+5webserver-----------------------------------------------------------------------------------------------------------------------
+# nano /etc/nginx/sites-available/ukk-02niam.net.conf
+---------------------------------------------------------
+server {
+    listen 80;
+    server_name www.ukk-02niam.net ukk-02niam.net;
+
+    root /var/www/html/wordpress;
+    index index.php index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+---------------------------------------------------------
+# nginx -t
+-
+# ln -s /etc/nginx/sites-available/ukk-02niam.net.conf /etc/nginx/sites-enabled/
+-
+# systemctl reload nginx.service
+Tambahan ketika eror -------------------------------------
+# cd /etc/nginx/sites-enabled/
+# ls (HAPUS YANG DEFAULT)
+# rm -rv default
+# systemctl restart nginx 
+JANGAN LUPA HAPUS HISTORY --------------------------------
+history -c
+
+-----------------------------------------------------------------------------------------------------------------------------

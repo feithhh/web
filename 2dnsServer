@@ -50,7 +50,7 @@ zone "10.10.10.in-addr.arpa" {
 };
 
 // Forward Zone Prox
-zone "ukk-02niam.net" {
+zone "ukk-niam.net" {
         type master;
         file "/etc/bind/ukk-02niam.net";
 };

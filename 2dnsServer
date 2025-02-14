@@ -1,0 +1,69 @@
+-----------------------------------------------------------------------------------------------------------------------------
+# cp -R /etc/bind/db.local /etc/bind/ukk-02niam.net
+# cp -R /etc/bind/db.127 /etc/bind/ukk-02niam.net.reverse
+-
+# nano /etc/bind/ukk-02niam.net
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ukk-02niam.net. root.ukk-02niam.net. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ukk-02niam.net.
+@       IN      A       10.10.10.119
+www.ukk-02niam.net.      IN      CNAME    ukk-02niam.net.
+ukk-niam.net.      IN      A      10.10.10.219
+---------------------------------------------------------------
+# nano /etc/bind/ukk-02niam.net.reverse
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ukk-02niam.net. root.ukk-02niam.net. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@      IN      NS      ukk-02niam.net.
+119     IN      PTR     ukk-02niam.net.
+119     IN      PTR     www.ukk-02niam.net.
+219     IN      PTR     ukk-niam.net.
+---------------------------------------------------------------
+# nano /etc/bind/named.conf.local
+// Forward Zone Wp
+zone "ukk-02niam.net" {
+        type master;
+        file "/etc/bind/ukk-02niam.net";
+};
+
+// Reverse Zone
+zone "10.10.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/ukk-02niam.net.reverse";
+};
+
+// Forward Zone Prox
+zone "ukk-02niam.net" {
+        type master;
+        file "/etc/bind/ukk-02niam.net";
+};
+# systemctl restart named.service
+# nano /etc/resolv.conf
+nanti yang ini kasi di paling bawah (yang lama dihapus)
+------------------------
+nameserver 10.10.10.119
+search ukk-02niam.net
+------------------------
+# nslookup ukk-02niam.net | (nanti muncul ini = 10.10.10.119 + ukk-02niam.net + www.ukk-02niam.net)
+(jangan lupa setting dns di windows)
+//lakukan ping di cmd 
+//10.10.10.119 + ukk-02niam.net + www.ukk-02niam.net
+
+-----------------------------------------------------------------------------------------------------------------------------
